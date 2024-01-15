@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Spinning Octahedron</title>
+    <style>
+      body {
+        margin: 0;
+        background-color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://threejs.org/build/three.js"></script>
+    <script>
+      // Set up scene
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      const renderer = new THREE.WebGLRenderer();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      // Create octahedron geometry
+      const octahedronGeometry = new THREE.OctahedronGeometry(5);
+
+      // Create material with white color
+      const material = new THREE.MeshBasicMaterial({
+        color: 0xffffff,
+        wireframe: true,
+      });
+
+      const octahedron = new THREE.Mesh(octahedronGeometry, material);
+      scene.add(octahedron);
+
+      // Set camera position
+      camera.position.z = 15;
+
+      // Set up animation
+      const animate = function () {
+        requestAnimationFrame(animate);
+
+        // Rotate the octahedron
+        octahedron.rotation.x += 0.01;
+        octahedron.rotation.y += 0.01;
+
+        renderer.render(scene, camera);
+      };
+
+      // Handle window resize
+      window.addEventListener("resize", () => {
+        const newWidth = window.innerWidth;
+        const newHeight = window.innerHeight;
+
+        camera.aspect = newWidth / newHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(newWidth, newHeight);
+      });
+
+      // Start the animation loop
+      animate();
+    </script>
+  </body>
+</html>
